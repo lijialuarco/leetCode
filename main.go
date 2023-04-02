@@ -1,25 +1,25 @@
 package main
 
-//
-// 给定一个正整数数组,元素重复个数只可能是两个结果,且两个结果互质,其中一个结果只出现一次
-// 要求空间复杂度为O(1) 找到这个元素
+// https://leetcode.cn/problems/search-insert-position/description/
+// 给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
+// 请必须使用时间复杂度为 O(log n) 的算法。
 func main() {
-	input := []int{1, 2, 3, 4, 5, 6, 7, 7, 6, 5, 4, 3, 2, 1, 5, 5}
-	println(findSingleCount(input, 4))
+	input := []int{1, 2, 5, 6, 7, 8, 9, 10}
+	println(searchInsert(input, 4))
 }
 
-func findSingleCount(nums []int, a int) int {
-	mask := 1 // 用来找到只出现一次的元素在二进制表示中的位置
-	for (a & mask) == 0 {
-		mask <<= 1
-	}
-
-	result := 0
-	for i := 0; i < len(nums); i++ {
-		if (nums[i] & mask) != 0 {
-			result ^= nums[i] // 异或操作，相同的数异或结果为0
+func searchInsert(nums []int, target int) int {
+	n := len(nums)
+	left, right := 0, n-1
+	ans := n
+	for left <= right {
+		mid := (right-left)>>1 + left
+		if target <= nums[mid] {
+			ans = mid
+			right = mid - 1
+		} else {
+			left = mid + 1
 		}
 	}
-
-	return result
+	return ans
 }
