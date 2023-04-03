@@ -1,22 +1,30 @@
 package main
 
+import "fmt"
+
 func main() {
-	println(countVowelStrings(2))
+	fmt.Println(prevPermOpt1([]int{1, 9, 4, 6, 7}))
 }
 
-func countVowelStrings(n int) int {
-	vowel := []int{
-		1, 1, 1, 1, 1,
-	}
-	for i := 1; i < n; i++ {
-		for j := 1; j < 5; j++ {
-			vowel[j] += vowel[j-1]
+func prevPermOpt1(arr []int) []int {
+	maxIndex := 0
+	minIndex := 0
+	for i := 0; i < len(arr); i++ {
+		for j := i + 1; j < len(arr); j++ {
+			if arr[i] > arr[j] {
+				if arr[i] > arr[maxIndex] {
+					maxIndex = i
+				}
+
+				if arr[j] < arr[minIndex] {
+					minIndex = j
+				}
+
+			}
 		}
 	}
-	ret := 0
-	for _, v := range vowel {
-		ret += v
+	if maxIndex != 0 && minIndex != 0 {
+		arr[maxIndex], arr[minIndex] = arr[minIndex], arr[maxIndex]
 	}
-	return ret
-
+	return arr
 }
