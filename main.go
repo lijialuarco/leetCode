@@ -1,9 +1,8 @@
 package main
 
-import "fmt"
-
 func main() {
-	fmt.Println(prevPermOpt1([]int{1, 9, 4, 6, 7}))
+	input := [][]int{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}}
+	println(FindNumberIn2DArray(input, 4))
 }
 
 func prevPermOpt1(arr []int) []int {
