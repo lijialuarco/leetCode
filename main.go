@@ -1,29 +1,51 @@
 package main
 
+import (
+	"fmt"
+	"sort"
+)
+
 func main() {
-	input := [][]int{{1, 4, 7, 11, 15}, {2, 5, 8, 12, 19}}
-	println(FindNumberIn2DArray(input, 4))
+	fmt.Println(numMovesStones(1, 2, 5))
 }
 
-func prevPermOpt1(arr []int) []int {
-	maxIndex := 0
-	minIndex := 0
-	for i := 0; i < len(arr); i++ {
-		for j := i + 1; j < len(arr); j++ {
-			if arr[i] > arr[j] {
-				if arr[i] > arr[maxIndex] {
-					maxIndex = i
-				}
+func numMovesStones(a int, b int, c int) []int {
+	return numMovesStonesII([]int{a, b, c})
+}
 
-				if arr[j] < arr[minIndex] {
-					minIndex = j
-				}
-
-			}
+func numMovesStonesII(stones []int) []int {
+	if len(stones) == 1 {
+		return stones
+	}
+	sort.Ints(stones)
+	minGap := stones[len(stones)-1]
+	maxStep, minStep, maxGap := 2, 1, 0
+	consecutiveCount := 0
+	//unConsecutiveCount := 0
+	for k := 1; k < len(stones); k++ {
+		if stones[k]-stones[k-1] == 1 {
+			consecutiveCount++
+		}
+		if stones[k]-stones[k-1] < minGap {
+			minGap = stones[k] - stones[k-1]
+		} else if k != 0 && stones[k]-stones[k-1] > maxGap {
+			maxGap = stones[k] - stones[k-1]
 		}
 	}
-	if maxIndex != 0 && minIndex != 0 {
-		arr[maxIndex], arr[minIndex] = arr[minIndex], arr[maxIndex]
+
+	if minGap == 1 && consecutiveCount > 1 {
+		minStep = 0
+		maxStep = 0
 	}
-	return arr
+
+	if minGap == 1 && consecutiveCount == 1 {
+		minStep = 1
+
+	}
+
+	if maxGap > 1 && consecutiveCount == 1 {
+		maxStep = maxGap - 1
+	}
+
+	return []int{minStep, maxStep}
 }
